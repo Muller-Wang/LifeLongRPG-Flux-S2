@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── 全局基底（浅色主题 v2.0）────────────────── */
+html, body {
+  background: #DCEDFF;
+  color: #2D3A4F;
+  font-family: 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  font-feature-settings: "tnum" 1, "ss01" 1;
+  overscroll-behavior: none;
+}
+
+body {
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(255, 255, 255, 0.7) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 100%, rgba(163, 145, 113, 0.10) 0%, transparent 55%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* 网格背景层（更浅的浅色版 HUD 网格）*/
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(8, 75, 131, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 75, 131, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* 浅色版"焦点光晕"——替代深色的 scan-overlay */
+.focus-aura::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(8, 75, 131, 0.08) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* ─── 自定义滚动条 ─────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(8, 75, 131, 0.15); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(8, 75, 131, 0.30); }
+
+/* ─── 工具类 ─────────────────────────── */
+.cut-tl   { clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 8%); }
+.cut-br   { clip-path: polygon(0% 0%, 100% 0%, 100% 92%, 92% 100%, 0% 100%); }
+.cut-both { clip-path: polygon(8% 0%, 100% 0%, 100% 92%, 92% 100%, 0% 100%, 0% 8%); }
+.cut-tr   { clip-path: polygon(0% 0%, 92% 0%, 100% 8%, 100% 100%, 0% 100%); }
+
+/* P5 风按钮切角 */
+.cut-btn {
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+/* 浅色主题的"光晕"——主要用驼色弥散 */
+.glow-camel { box-shadow: 0 0 18px rgba(163, 145, 113, 0.25); }
+.glow-blue  { box-shadow: 0 0 16px rgba(8, 75, 131, 0.18); }
+.glow-soft  { box-shadow: 0 4px 16px rgba(8, 75, 131, 0.08); }
+
+/* hover 抬升 */
+.hover-lift { transition: transform 0.15s, box-shadow 0.15s; }
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(8, 75, 131, 0.12);
+}
+
+/* 描边渐变（浅色版：冷色到暖色）*/
+.border-grad {
+  position: relative;
+}
+.border-grad::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(8, 75, 131, 0.30), rgba(163, 145, 113, 0.30));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* 标签：稀有度色环（浅色调整）*/
+.rarity-ssr { color: #FFBC42; border-color: rgba(255, 188, 66, 0.6); }
+.rarity-sr  { color: #084B83; border-color: rgba(8, 75, 131, 0.6); }
+.rarity-r   { color: #94B0DA; border-color: rgba(148, 176, 218, 0.7); }
+.rarity-n   { color: #5A6A7E; border-color: rgba(90, 106, 126, 0.4); }
+
+/* placeholder */
+::placeholder { color: rgba(90, 106, 126, 0.5); }
+
+/* 标题装饰：3px 高的 Yale Blue 下划线（在卡片内可手动加）*/
+.title-underline {
+  position: relative;
+  padding-bottom: 6px;
+}
+.title-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 30%;
+  height: 3px;
+  background: #084B83;
+}
+
+/* ─── 漫画风对话框 · 弹出动效 ─────────────── */
+@keyframes bubble-pop {
+  0%   { opacity: 0; transform: scale(0.7) translateY(14px); }
+  60%  { opacity: 1; transform: scale(1.04) translateY(-3px); }
+  80%  { transform: scale(0.98) translateY(1px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-bubble-pop {
+  animation: bubble-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+/* 闪烁光标 */
+@keyframes blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.animate-blink { animation: blink 0.8s steps(1) infinite; }
+
+/* 飘动装饰 */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+.animate-float { animation: float-y 3s ease-in-out infinite; }
+
+/* ─── ENTERING WORLD · 简单淡入过渡 ─────── */
+
+@keyframes simple-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 全屏遮罩淡入（onboarding finalizing 触发）*/
+.world-bloom {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #DCEDFF;
+  animation: simple-fade-in 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+/* 中央 ENTERING WORLD 标识淡入（与 overlay 同步）*/
+.world-mark {
+  position: fixed;
+  z-index: 101;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: simple-fade-in 0.6s 0.1s ease-out both;
+  pointer-events: none;
+}
+
+/* home 页面入场：纯淡入 */
+.home-enter {
+  animation: simple-fade-in 0.5s ease-out;
+}
